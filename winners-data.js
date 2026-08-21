@@ -15,7 +15,7 @@ const SHOWCASE_MONTHS = [
         creators: [{ label: "BombForge", url: "https://x.com/BombForge" }],
         code: "2102-2783-1506",
         playUrl: "https://www.fortnite.com/@bombforge/2102-2783-1506",
-        image: "images/01-one-in-the-chamber.jpg",
+        image: "https://cdn-0001.qstv.on.epicgames.com/ckmBGaMOOEfkWADETG/image/landscape_comp.jpeg",
       },
       {
         title: "Star Wars [Roguelike] Shadowfall",
@@ -23,7 +23,7 @@ const SHOWCASE_MONTHS = [
         creators: [{ label: "@kbuckmaster", url: "https://x.com/kbuckmaster" }],
         code: "2832-9803-9290",
         playUrl: "https://www.fortnite.com/@buckmaster/2832-9803-9290",
-        image: "images/02-shadowfall.jpg",
+        image: "https://cdn-0001.qstv.on.epicgames.com/kSMuvsGGTxzKQpuIej/image/landscape_comp.jpeg",
       },
       {
         title: "Genesis Squid Game",
@@ -31,7 +31,7 @@ const SHOWCASE_MONTHS = [
         creators: [{ label: "@GenesisStudios", url: "https://x.com/GenesisStudios" }],
         code: "5581-8600-6431",
         playUrl: "https://www.fortnite.com/@genesisstudios/5581-8600-6431",
-        image: "images/03-genesis-squid-game.jpg",
+        image: "https://cdn-0001.qstv.on.epicgames.com/PLonLTMpopdwrtfjJe/image/landscape_comp.jpeg",
       },
       {
         title: "Pirate Ship",
@@ -39,7 +39,7 @@ const SHOWCASE_MONTHS = [
         creators: [{ label: "@Puppetmasteer", url: "https://x.com/Puppetmasteer" }],
         code: null,
         playUrl: null,
-        image: "images/04-pirate-ship.jpg",
+        image: "https://pbs.twimg.com/media/HPzuJxuW8AAeP5N?format=jpg&name=large",
       },
       {
         title: "Cosm & En",
@@ -47,7 +47,7 @@ const SHOWCASE_MONTHS = [
         creators: [{ label: "@SkylarGem", url: "https://x.com/SkylarGem" }],
         code: null,
         playUrl: null,
-        image: "images/05-cosm-and-en.jpg",
+        image: "https://pbs.twimg.com/media/HPzwNVUXgAAWQaj?format=jpg&name=large",
       },
       {
         title: "Verity Pillars",
@@ -56,7 +56,7 @@ const SHOWCASE_MONTHS = [
         code: null,
         playUrl: null,
         comingSoon: true,
-        image: "images/06-verity-pillars.jpg",
+        image: "https://pbs.twimg.com/media/HPzyYUoWQAAusuD?format=jpg&name=large",
       },
       {
         title: "SawYair Gunfights",
@@ -64,7 +64,7 @@ const SHOWCASE_MONTHS = [
         creators: [{ label: "@SawYair_", url: "https://x.com/SawYair_" }],
         code: "7001-0134-6677",
         playUrl: "https://www.fortnite.com/@sawyer/7001-0134-6677",
-        image: "images/07-sawyair-gunfights.jpg",
+        image: "https://cdn-0001.qstv.on.epicgames.com/nzEDoArAJdenbEZmZU/image/landscape_comp.jpeg",
       },
       {
         title: "🎲SUPER GAME OF PAIN🎲 BOARD GAME",
@@ -72,7 +72,7 @@ const SHOWCASE_MONTHS = [
         creators: [],
         code: "9981-0256-6722",
         playUrl: "https://www.fortnite.com/@bumpjumpergames/9981-0256-6722",
-        image: "images/08-super-game-of-pain.jpg",
+        image: "https://cdn-0001.qstv.on.epicgames.com/CLXtBkHfaPxBYjkCef/image/landscape_comp.jpeg",
       },
       {
         title: "Snatching Sols",
@@ -80,7 +80,7 @@ const SHOWCASE_MONTHS = [
         creators: [{ label: "@SOLdev_", url: "https://x.com/SOLdev_" }],
         code: "0464-6343-1343",
         playUrl: null,
-        image: "images/09-snatching-sols.jpg",
+        image: "https://pbs.twimg.com/media/HP90S3qWIAAdgES?format=jpg&name=large",
       },
       {
         title: "DREAD",
@@ -92,7 +92,7 @@ const SHOWCASE_MONTHS = [
         code: "9367-7868-6804",
         playUrl: null,
         comingSoon: true,
-        image: "images/10-dread.jpg",
+        image: "https://pbs.twimg.com/media/HOpy4W7WUAAwKy6?format=jpg&name=4096x4096",
       },
       {
         title: "FBAK08 (3v3 Basketball)",
@@ -100,7 +100,7 @@ const SHOWCASE_MONTHS = [
         creators: [],
         code: "8662-5140-3879",
         playUrl: "https://www.fortnite.com/@yt344567/8662-5140-3879",
-        image: "images/11-fbak08-basketball.jpg",
+        image: "https://cdn-0001.qstv.on.epicgames.com/ITxwKbbQFZqVKJlMmx/image/landscape_comp.jpeg",
       },
       {
         title: "Alien Lab Tycoon",
@@ -108,7 +108,7 @@ const SHOWCASE_MONTHS = [
         creators: [{ label: "@Elextris_FN", url: "https://x.com/Elextris_FN" }],
         code: "7373-0595-4789",
         playUrl: "https://www.fortnite.com/@elextris/7373-0595-4789",
-        image: "images/12-alien-lab-tycoon.jpg",
+        image: "https://cdn-0001.qstv.on.epicgames.com/dwsubASOqvHsnkguMK/image/landscape_comp_b.jpeg",
       },
       {
         title: "Brainrot RNG 🎲🍀 (Simulator)",
@@ -116,7 +116,7 @@ const SHOWCASE_MONTHS = [
         creators: [{ label: "@Ake_Studio_", url: "https://x.com/Ake_Studio_" }],
         code: "6982-6627-7196",
         playUrl: "https://www.fortnite.com/@akestudio/6982-6627-7196",
-        image: "images/13-brainrot-rng.jpg",
+        image: "https://cdn-0001.qstv.on.epicgames.com/nDZxcRUMgnZLqRwPAa/image/landscape_comp.jpeg",
       },
       {
         title: "BEAT THE BRAINROTS",
@@ -127,7 +127,7 @@ const SHOWCASE_MONTHS = [
         ],
         code: "1796-9956-7050",
         playUrl: "https://www.fortnite.com/@post/1796-9956-7050",
-        image: "images/14-beat-the-brainrots.jpg",
+        image: "https://cdn-0001.qstv.on.epicgames.com/fNYuEISKNgFJQDYvqt/image/landscape_comp.jpeg",
       },
       {
         title: "Sunken Hope",
@@ -135,7 +135,7 @@ const SHOWCASE_MONTHS = [
         creators: [{ label: "@Giddybrommetje", url: "https://x.com/Giddybrommetje" }],
         code: "4665-3384-3482",
         playUrl: "https://www.fortnite.com/@giddybrom/4665-3384-3482",
-        image: "images/15-sunken-hope.jpg",
+        image: "https://cdn-0001.qstv.on.epicgames.com/HqQTnZITJcbYrKTeiG/image/landscape_comp.jpeg",
       },
       {
         title: "🏆Better Egg Hunt 3: Reborn🥚🔍",
@@ -143,7 +143,7 @@ const SHOWCASE_MONTHS = [
         creators: [{ label: "@WINXipde", url: "https://x.com/WINXipde" }],
         code: "7560-4645-2370",
         playUrl: "https://www.fortnite.com/@adiel0584/7560-4645-2370",
-        image: "images/16-better-egg-hunt-3.jpg",
+        image: "https://cdn-0001.qstv.on.epicgames.com/VBgYoYNipZvbiOAFFA/image/landscape_comp.jpeg",
       },
       {
         title: "Bouncin Ballers",
@@ -151,7 +151,7 @@ const SHOWCASE_MONTHS = [
         creators: [{ label: "@CheezyCreates", url: "https://x.com/CheezyCreates" }],
         code: null,
         playUrl: null,
-        image: "images/17-bouncin-ballers.jpg",
+        image: "https://pbs.twimg.com/media/HP-BjCxW4AE-I-U?format=jpg&name=large",
       },
       {
         title: "☁️ Sweaty Skies - Zone Wars",
@@ -159,7 +159,7 @@ const SHOWCASE_MONTHS = [
         creators: [{ label: "@BenjiLikesCakes", url: "https://x.com/BenjiLikesCakes" }],
         code: "0996-3515-7339",
         playUrl: "https://www.fortnite.com/@cakesfn/0996-3515-7339",
-        image: "images/18-sweaty-skies-zone-wars.jpg",
+        image: "https://cdn-0001.qstv.on.epicgames.com/uRLTCXfsnxqoRfgyoz/image/landscape_comp.jpeg",
       },
     ],
   },
