@@ -1,5 +1,11 @@
 (() => {
-  const STORAGE_KEY = "creatorShowcase.names.v2";
+  const STORAGE_KEY = "creatorShowcase.names.v3";
+  const HISTORY_SESSION_KEY = "creatorShowcase.history.v1";
+
+  const navEntries = performance.getEntriesByType("navigation");
+  const IS_RELOAD = navEntries.length
+    ? navEntries[0].type === "reload"
+    : !!(performance.navigation && performance.navigation.type === 1);
 
   const COLOR_PALETTE = [
     "#ff3d9a", // pink
@@ -33,12 +39,42 @@
   let entries = loadEntries();
   let currentRotation = 0; // radians
   let spinning = false;
-  let history = [];
+  let history = loadHistory();
   let currentWinnerIndex = -1;
 
-  function loadEntries() {
+  function loadHistory() {
+    // A refresh should reset the history — a navigation to another page and
+    // back (in the same tab) should not.
+    if (IS_RELOAD) {
+      sessionStorage.removeItem(HISTORY_SESSION_KEY);
+      return [];
+    }
+
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = sessionStorage.getItem(HISTORY_SESSION_KEY);
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.map((entry) => ({ name: entry.name, time: new Date(entry.time) }));
+    } catch {
+      return [];
+    }
+  }
+
+  function saveHistory() {
+    sessionStorage.setItem(HISTORY_SESSION_KEY, JSON.stringify(history));
+  }
+
+  function loadEntries() {
+    // Same rule as history: a refresh clears the wheel, navigating to
+    // another page and back (same tab) keeps it.
+    if (IS_RELOAD) {
+      sessionStorage.removeItem(STORAGE_KEY);
+      return defaultEntries();
+    }
+
+    try {
+      const raw = sessionStorage.getItem(STORAGE_KEY);
       if (!raw) return defaultEntries();
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length) return parsed;
@@ -53,7 +89,7 @@
   }
 
   function saveEntries() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
   }
 
   function colorForIndex(i) {
@@ -268,6 +304,7 @@
   function addHistory(name) {
     history.unshift({ name, time: new Date() });
     history = history.slice(0, 12);
+    saveHistory();
     renderHistory();
   }
 
@@ -325,4 +362,9 @@
 
   renderList();
   renderHistory();
+
+  if (history.length > 0) {
+    currentWinnerName.textContent = history[0].name;
+    currentWinner.hidden = false;
+  }
 })();
