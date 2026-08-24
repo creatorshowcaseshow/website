@@ -329,6 +329,9 @@ body {
 .add-btn:focus-visible,
 .ghost-btn:focus-visible,
 #nameInput:focus-visible,
+.bulk-toggle-btn:focus-visible,
+.bulk-textarea:focus-visible,
+.boost-btn:focus-visible,
 .remove-btn:focus-visible {
   outline: 3px solid var(--cyan);
   outline-offset: 2px;
@@ -497,6 +500,54 @@ body {
   filter: brightness(1.1);
 }
 
+.bulk-toggle-btn {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-align: left;
+  padding: 0.3rem 0.1rem 0.8rem;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.bulk-toggle-btn:hover {
+  color: var(--cyan);
+}
+
+.bulk-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.bulk-textarea {
+  width: 100%;
+  resize: vertical;
+  background: var(--bg-deep);
+  border: 1px solid var(--panel-edge);
+  border-radius: 10px;
+  padding: 0.7rem 0.9rem;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.bulk-textarea::placeholder {
+  color: #7a6d92;
+}
+
+.bulk-add-btn {
+  align-self: flex-end;
+  padding: 0.55rem 1.3rem;
+}
+
 .name-list {
   list-style: none;
   margin: 0;
@@ -518,6 +569,10 @@ body {
   padding: 0.55rem 0.7rem;
 }
 
+.name-list li.is-boosted {
+  border-color: rgba(255, 210, 63, 0.5);
+}
+
 .swatch {
   width: 12px;
   height: 12px;
@@ -532,6 +587,26 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 0.92rem;
+}
+
+.boost-btn {
+  background: none;
+  border: none;
+  color: var(--panel-edge);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.2rem 0.3rem;
+  border-radius: 6px;
+  transition: color 0.15s ease;
+}
+
+.boost-btn:hover {
+  color: var(--yellow);
+}
+
+.boost-btn.is-active {
+  color: var(--yellow);
 }
 
 .remove-btn {
@@ -555,6 +630,17 @@ body {
   text-align: center;
   padding: 1rem 0;
   margin: 0;
+}
+
+.boost-hint {
+  color: var(--text-dim);
+  font-size: 0.76rem;
+  margin: 0.6rem 0 0;
+  text-align: center;
+}
+
+.boost-star {
+  color: var(--yellow);
 }
 
 .panel-actions {
