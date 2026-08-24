@@ -1,0 +1,24 @@
+{
+  "name": "Creator Showcase",
+  "short_name": "Creator Showcase",
+  "start_url": "home.html",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#0b0615",
+  "theme_color": "#0b0615",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
