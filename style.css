@@ -1023,6 +1023,67 @@ body {
   text-decoration: underline;
 }
 
+/* ---------- App splash screen (standalone/home-screen launch only) ---------- */
+
+.app-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-deep);
+  transition: opacity 0.4s ease;
+}
+
+.app-splash-logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 26px;
+  box-shadow: 0 0 40px rgba(255, 61, 154, 0.35);
+  animation: splash-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes splash-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.06); }
+}
+
+.app-splash-hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- Custom scrollbars ---------- */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--pink) var(--bg-deep);
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--pink), var(--cyan));
+  border-radius: 999px;
+  border: 2px solid var(--bg-deep);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  filter: brightness(1.15);
+}
+
+*::-webkit-scrollbar-corner {
+  background: var(--bg-deep);
+}
+
 /* ---------- Reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1036,6 +1097,9 @@ body {
   .modal-backdrop,
   .result-ticket,
   .confirm-dialog {
+    animation: none;
+  }
+  .app-splash-logo {
     animation: none;
   }
   .island-code-value-wrap > span {
