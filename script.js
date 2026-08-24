@@ -16,14 +16,21 @@
     "#5cff9d", // mint
   ];
 
+  const BOOST_WEIGHT = 2; // odds multiplier for names passed over before
+
   const canvas = document.getElementById("wheelCanvas");
   const ctx = canvas.getContext("2d");
   const pointer = document.getElementById("pointer");
   const hubBtn = document.getElementById("hubBtn");
   const nameForm = document.getElementById("nameForm");
   const nameInput = document.getElementById("nameInput");
+  const bulkToggleBtn = document.getElementById("bulkToggleBtn");
+  const bulkPanel = document.getElementById("bulkPanel");
+  const bulkInput = document.getElementById("bulkInput");
+  const bulkAddBtn = document.getElementById("bulkAddBtn");
   const nameList = document.getElementById("nameList");
   const emptyState = document.getElementById("emptyState");
+  const boostHint = document.getElementById("boostHint");
   const shuffleBtn = document.getElementById("shuffleBtn");
   const clearBtn = document.getElementById("clearBtn");
   const resultTicket = document.getElementById("resultTicket");
@@ -35,7 +42,7 @@
   const currentWinner = document.getElementById("currentWinner");
   const currentWinnerName = document.getElementById("currentWinnerName");
 
-  /** @type {{name: string, color: string}[]} */
+  /** @type {{name: string, color: string, weight: number}[]} */
   let entries = loadEntries();
   let currentRotation = 0; // radians
   let spinning = false;
@@ -98,6 +105,18 @@
 
   // ---------- Rendering ----------
 
+  function getSliceBoundaries() {
+    const totalWeight = entries.reduce((sum, e) => sum + (e.weight || 1), 0) || 1;
+    let acc = 0;
+    return entries.map((entry) => {
+      const w = entry.weight || 1;
+      const start = (acc / totalWeight) * Math.PI * 2;
+      acc += w;
+      const end = (acc / totalWeight) * Math.PI * 2;
+      return { start, end };
+    });
+  }
+
   function drawWheel() {
     const size = canvas.width;
     const center = size / 2;
@@ -122,12 +141,13 @@
       return;
     }
 
-    const sliceAngle = (Math.PI * 2) / entries.length;
+    const boundaries = getSliceBoundaries();
     const maxLabelWidth = radius - 24 - hubRadius;
 
     entries.forEach((entry, i) => {
-      const start = currentRotation + i * sliceAngle;
-      const end = start + sliceAngle;
+      const b = boundaries[i];
+      const start = currentRotation + b.start;
+      const end = currentRotation + b.end;
 
       ctx.beginPath();
       ctx.moveTo(center, center);
@@ -142,7 +162,7 @@
       // label
       ctx.save();
       ctx.translate(center, center);
-      ctx.rotate(start + sliceAngle / 2);
+      ctx.rotate((start + end) / 2);
       ctx.textAlign = "right";
       ctx.textBaseline = "middle";
       ctx.fillStyle = "#120a1f";
@@ -173,9 +193,12 @@
   function renderList() {
     nameList.innerHTML = "";
     emptyState.hidden = entries.length !== 0;
+    boostHint.hidden = entries.length === 0;
 
     entries.forEach((entry, i) => {
+      const boosted = (entry.weight || 1) > 1;
       const li = document.createElement("li");
+      if (boosted) li.classList.add("is-boosted");
 
       const swatch = document.createElement("span");
       swatch.className = "swatch";
@@ -185,6 +208,14 @@
       label.className = "entry-name";
       label.textContent = entry.name;
 
+      const boostBtn = document.createElement("button");
+      boostBtn.className = "boost-btn" + (boosted ? " is-active" : "");
+      boostBtn.type = "button";
+      boostBtn.title = "Toggle better odds (passed over before)";
+      boostBtn.setAttribute("aria-label", `Toggle boosted odds for ${entry.name}`);
+      boostBtn.textContent = "★";
+      boostBtn.addEventListener("click", () => toggleBoost(i));
+
       const removeBtn = document.createElement("button");
       removeBtn.className = "remove-btn";
       removeBtn.type = "button";
@@ -192,7 +223,7 @@
       removeBtn.textContent = "✕";
       removeBtn.addEventListener("click", () => removeEntry(i));
 
-      li.append(swatch, label, removeBtn);
+      li.append(swatch, label, boostBtn, removeBtn);
       nameList.appendChild(li);
     });
 
@@ -200,10 +231,49 @@
     drawWheel();
   }
 
-  function addEntry(name) {
+  function pushEntry(name, boosted) {
     const trimmed = name.trim();
-    if (!trimmed) return;
-    entries.push({ name: trimmed, color: colorForIndex(entries.length) });
+    if (!trimmed) return false;
+    entries.push({
+      name: trimmed,
+      color: colorForIndex(entries.length),
+      weight: boosted ? BOOST_WEIGHT : 1,
+    });
+    return true;
+  }
+
+  function addEntry(name) {
+    if (pushEntry(name, false)) {
+      saveEntries();
+      renderList();
+    }
+  }
+
+  function addBulkEntries(text) {
+    const lines = text.split(/\r?\n/);
+    let addedAny = false;
+
+    lines.forEach((line) => {
+      if (!line.trim()) return;
+      let parts = line.split("\t");
+      if (parts.length === 1) parts = line.split(",");
+      const name = parts[0];
+      const flag = parts[1] ? parts[1].trim() : "";
+      const boosted = /^(y|yes|true|1|x)$/i.test(flag);
+      if (pushEntry(name, boosted)) addedAny = true;
+    });
+
+    if (addedAny) {
+      saveEntries();
+      renderList();
+    }
+    return addedAny;
+  }
+
+  function toggleBoost(index) {
+    const entry = entries[index];
+    if (!entry) return;
+    entry.weight = (entry.weight || 1) > 1 ? 1 : BOOST_WEIGHT;
     saveEntries();
     renderList();
   }
@@ -249,7 +319,6 @@
     hubBtn.disabled = true;
     modalBackdrop.hidden = true;
 
-    const sliceAngle = (Math.PI * 2) / entries.length;
     const extraSpins = 5 + Math.random() * 3; // 5-8 full rotations
     const randomOffset = Math.random() * Math.PI * 2;
     const totalRotation = extraSpins * Math.PI * 2 + randomOffset;
@@ -269,22 +338,24 @@
       if (t < 1) {
         requestAnimationFrame(frame);
       } else {
-        finishSpin(sliceAngle);
+        finishSpin();
       }
     }
 
     requestAnimationFrame(frame);
   }
 
-  function finishSpin(sliceAngle) {
+  function finishSpin() {
     spinning = false;
     hubBtn.disabled = entries.length < 2;
 
     // Pointer sits at the top (angle = -PI/2 in canvas terms, i.e. 270deg).
-    // Normalize rotation and find which slice sits under the pointer.
+    // Normalize rotation and find which weighted slice sits under the pointer.
+    const boundaries = getSliceBoundaries();
     const normalized = ((currentRotation % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
     const pointerAngle = ((Math.PI * 1.5) - normalized + Math.PI * 2) % (Math.PI * 2);
-    const winningIndex = Math.floor(pointerAngle / sliceAngle) % entries.length;
+    let winningIndex = boundaries.findIndex((b) => pointerAngle >= b.start && pointerAngle < b.end);
+    if (winningIndex === -1) winningIndex = entries.length - 1;
     const winner = entries[winningIndex];
 
     pointer.classList.remove("bounce");
@@ -329,6 +400,20 @@
     addEntry(nameInput.value);
     nameInput.value = "";
     nameInput.focus();
+  });
+
+  bulkToggleBtn.addEventListener("click", () => {
+    const expanded = bulkToggleBtn.getAttribute("aria-expanded") === "true";
+    bulkToggleBtn.setAttribute("aria-expanded", String(!expanded));
+    bulkToggleBtn.textContent = expanded ? "Paste multiple names ▾" : "Paste multiple names ▴";
+    bulkPanel.hidden = expanded;
+    if (!expanded) bulkInput.focus();
+  });
+
+  bulkAddBtn.addEventListener("click", () => {
+    if (addBulkEntries(bulkInput.value)) {
+      bulkInput.value = "";
+    }
   });
 
   shuffleBtn.addEventListener("click", shuffleColors);
