@@ -16,11 +16,25 @@
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html, body {
   margin: 0;
   padding: 0;
+}
+
+button,
+a,
+.social-link,
+.nav-link,
+.boost-btn,
+.remove-btn,
+.ticket-close,
+.hub-btn,
+.island-code {
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 body {
@@ -297,14 +311,14 @@ body {
 .hub-btn {
   position: absolute;
   z-index: 4;
-  width: 92px;
-  height: 92px;
+  width: clamp(56px, 14%, 92px);
+  height: clamp(56px, 14%, 92px);
   border-radius: 50%;
   border: 4px solid var(--bg-deep);
   background: radial-gradient(circle at 35% 30%, #ff6fb3, var(--pink) 60%);
   color: #fff;
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: clamp(0.75rem, 3.2vw, 1.1rem);
   letter-spacing: 0.05em;
   cursor: pointer;
   box-shadow: 0 0 0 4px var(--yellow), 0 10px 24px rgba(255, 61, 154, 0.45);
