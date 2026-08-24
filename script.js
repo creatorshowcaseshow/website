@@ -364,8 +364,11 @@
 
   // ---------- Spin logic ----------
 
-  function easeOutCubic(t) {
-    return 1 - Math.pow(1 - t, 3);
+  function easeOutSpin(t) {
+    // Quintic ease-out: much faster initial spin, and a long, dramatic
+    // slow-down tail right before landing — more intense than a plain
+    // cubic ease.
+    return 1 - Math.pow(1 - t, 5);
   }
 
   function spin() {
@@ -374,19 +377,19 @@
     hubBtn.disabled = true;
     modalBackdrop.hidden = true;
 
-    const extraSpins = 5 + Math.random() * 3; // 5-8 full rotations
+    const extraSpins = 10 + Math.random() * 6; // 10-16 full rotations
     const randomOffset = Math.random() * Math.PI * 2;
     const totalRotation = extraSpins * Math.PI * 2 + randomOffset;
 
     const startRotation = currentRotation;
     const targetRotation = startRotation + totalRotation;
-    const duration = 4200;
+    const duration = 10000 + Math.random() * 5000; // 10-15 seconds
     const startTime = performance.now();
 
     function frame(now) {
       const elapsed = now - startTime;
       const t = Math.min(elapsed / duration, 1);
-      const eased = easeOutCubic(t);
+      const eased = easeOutSpin(t);
       currentRotation = startRotation + (targetRotation - startRotation) * eased;
       drawWheel();
 
