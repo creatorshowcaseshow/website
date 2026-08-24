@@ -83,7 +83,25 @@
           <button type="submit" class="add-btn">Add</button>
         </form>
 
+        <button id="bulkToggleBtn" class="bulk-toggle-btn" type="button" aria-expanded="false">
+          Paste multiple names ▾
+        </button>
+
+        <div id="bulkPanel" class="bulk-panel" hidden>
+          <textarea
+            id="bulkInput"
+            class="bulk-textarea"
+            placeholder="Paste names here, one per line.&#10;&#10;Optionally paste a second column (from a spreadsheet) marking who was submitted before and not picked — those names get better odds on the wheel."
+            rows="5"
+          ></textarea>
+          <button id="bulkAddBtn" class="add-btn bulk-add-btn" type="button">Add All</button>
+        </div>
+
         <ul id="nameList" class="name-list"></ul>
+
+        <p id="boostHint" class="boost-hint" hidden>
+          <span class="boost-star">★</span> = better odds (passed over before)
+        </p>
 
         <p id="emptyState" class="empty-state">
           No names yet. Add your first creator to build the wheel.
