@@ -38,6 +38,10 @@
   const ticketClose = document.getElementById("ticketClose");
   const removeWinnerBtn = document.getElementById("removeWinnerBtn");
   const modalBackdrop = document.getElementById("modalBackdrop");
+  const confirmBackdrop = document.getElementById("confirmBackdrop");
+  const confirmMessage = document.getElementById("confirmMessage");
+  const confirmCancelBtn = document.getElementById("confirmCancelBtn");
+  const confirmOkBtn = document.getElementById("confirmOkBtn");
   const historyList = document.getElementById("historyList");
   const currentWinner = document.getElementById("currentWinner");
   const currentWinnerName = document.getElementById("currentWinnerName");
@@ -249,17 +253,40 @@
     }
   }
 
+  const FLAG_WORD = /^(y|yes|true|1|x|n|no|false|0)$/i;
+  const BOOST_WORD = /^(y|yes|true|1|x)$/i;
+
+  function splitBulkLine(line) {
+    // Prefer a real column separator (tab or comma) when pasted straight
+    // from a spreadsheet. Fall back to runs of 2+ spaces (common when
+    // copy-pasting aligned text). If neither is present but the line still
+    // ends in a recognizable flag word after a single space, split there —
+    // covers text that got flattened to single spaces in transit.
+    if (line.includes("\t")) return line.split("\t");
+    if (line.includes(",")) return line.split(",");
+    if (/\s{2,}/.test(line)) return line.split(/\s{2,}/);
+
+    const lastSpace = line.lastIndexOf(" ");
+    if (lastSpace > -1) {
+      const tail = line.slice(lastSpace + 1).trim();
+      if (FLAG_WORD.test(tail)) {
+        return [line.slice(0, lastSpace), tail];
+      }
+    }
+
+    return [line];
+  }
+
   function addBulkEntries(text) {
     const lines = text.split(/\r?\n/);
     let addedAny = false;
 
     lines.forEach((line) => {
       if (!line.trim()) return;
-      let parts = line.split("\t");
-      if (parts.length === 1) parts = line.split(",");
+      const parts = splitBulkLine(line);
       const name = parts[0];
       const flag = parts[1] ? parts[1].trim() : "";
-      const boosted = /^(y|yes|true|1|x)$/i.test(flag);
+      const boosted = BOOST_WORD.test(flag);
       if (pushEntry(name, boosted)) addedAny = true;
     });
 
@@ -297,9 +324,37 @@
     renderList();
   }
 
-  function clearAll() {
+  function showConfirm(message) {
+    return new Promise((resolve) => {
+      confirmMessage.textContent = message;
+      confirmBackdrop.hidden = false;
+
+      function cleanup(result) {
+        confirmBackdrop.hidden = true;
+        confirmOkBtn.removeEventListener("click", onOk);
+        confirmCancelBtn.removeEventListener("click", onCancel);
+        confirmBackdrop.removeEventListener("click", onBackdropClick);
+        resolve(result);
+      }
+      function onOk() {
+        cleanup(true);
+      }
+      function onCancel() {
+        cleanup(false);
+      }
+      function onBackdropClick(e) {
+        if (e.target === confirmBackdrop) cleanup(false);
+      }
+
+      confirmOkBtn.addEventListener("click", onOk);
+      confirmCancelBtn.addEventListener("click", onCancel);
+      confirmBackdrop.addEventListener("click", onBackdropClick);
+    });
+  }
+
+  async function clearAll() {
     if (entries.length === 0) return;
-    const confirmed = confirm("Remove every name from the wheel?");
+    const confirmed = await showConfirm("Remove every name from the wheel?");
     if (!confirmed) return;
     entries = [];
     saveEntries();
@@ -438,8 +493,12 @@
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !modalBackdrop.hidden) {
+    if (e.key !== "Escape") return;
+    if (!modalBackdrop.hidden) {
       modalBackdrop.hidden = true;
+    }
+    if (!confirmBackdrop.hidden) {
+      confirmCancelBtn.click();
     }
   });
 
