@@ -332,6 +332,7 @@ body {
 .bulk-toggle-btn:focus-visible,
 .bulk-textarea:focus-visible,
 .boost-btn:focus-visible,
+.confirm-danger-btn:focus-visible,
 .remove-btn:focus-visible {
   outline: 3px solid var(--cyan);
   outline-offset: 2px;
@@ -437,6 +438,48 @@ body {
   border-color: var(--pink);
   color: var(--pink);
   background: rgba(255, 61, 154, 0.1);
+}
+
+.confirm-dialog {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--panel-edge);
+  border-radius: 18px;
+  padding: 1.8rem 2rem;
+  max-width: 340px;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  animation: ticket-pop 0.3s cubic-bezier(0.2, 1.4, 0.4, 1);
+}
+
+.confirm-message {
+  margin: 0 0 1.4rem;
+  color: var(--text);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.7rem;
+}
+
+.confirm-danger-btn {
+  background: var(--pink);
+  color: var(--bg-deep);
+  border: none;
+  border-radius: 10px;
+  padding: 0.6rem 1.2rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.confirm-danger-btn:hover {
+  filter: brightness(1.1);
 }
 
 /* ---------- Control panel ---------- */
@@ -991,7 +1034,8 @@ body {
     animation: none;
   }
   .modal-backdrop,
-  .result-ticket {
+  .result-ticket,
+  .confirm-dialog {
     animation: none;
   }
   .island-code-value-wrap > span {
